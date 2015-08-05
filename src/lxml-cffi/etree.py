@@ -200,7 +200,7 @@ try:
     _LIBXML_VERSION_INT = int(
         re.match(u'[0-9]+', tree.ffi.string(tree.xmlParserVersion).decode("ascii")).group(0))
 except Exception:
-    print u"Unknown libxml2 version: %s" % tree.ffi.string(tree.xmlParserVersion).decode("ascii")
+    print(u"Unknown libxml2 version: %s" % tree.ffi.string(tree.xmlParserVersion).decode("ascii"))
     _LIBXML_VERSION_INT = 0
 
 LXML_VERSION = __unpackDottedVersion(tree.LXML_VERSION_STRING)
