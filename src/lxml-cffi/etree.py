@@ -160,7 +160,7 @@ class _ExceptionContext:
         if value is None and traceback is None:
             raise type
         else:
-            raise type, value, traceback
+            raise type(value, traceback)
 
 # version information
 def __unpackDottedVersion(version):
@@ -1342,7 +1342,7 @@ class __ContentOnlyElement(_Element):
         if isinstance(index, slice):
             return []
         else:
-            raise IndexError, u"list index out of range"        
+            raise IndexError, u"list index out of range"
 
     def __setitem__(self, index, value):
         u"__setitem__(self, index, value)"
