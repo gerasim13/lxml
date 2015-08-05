@@ -52,13 +52,13 @@ except ImportError:
 
 class _ImmutableMapping(MutableMapping):
     def __getitem__(self, key):
-        raise KeyError as key
+        raise KeyError(key)
 
     def __setitem__(self, key, value):
-        raise KeyError as key
+        raise KeyError(key)
 
     def __delitem__(self, key):
-        raise KeyError as key
+        raise KeyError(key)
 
     def __contains__(self, key):
         return False
@@ -2221,7 +2221,7 @@ class _Attrib:
         result = _getAttributeValue(self._element, key, None)
         if result is None:
             if not default:
-                raise KeyError as key
+                raise KeyError(key)
             result = default[0]
         else:
             _delAttribute(self._element, key)
@@ -2250,7 +2250,7 @@ class _Attrib:
         _assertValidNode(self._element)
         result = _getAttributeValue(self._element, key, None)
         if result is None:
-            raise KeyError as key
+            raise KeyError(key)
         return result
 
     def __len__(self):
