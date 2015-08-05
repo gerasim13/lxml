@@ -590,7 +590,7 @@ class _Element(object):
         if self._c_node.parent and not _isElement(self._c_node.parent):
             if element._c_node.type != tree.XML_PI_NODE:
                 if element._c_node.type != tree.XML_COMMENT_NODE:
-                    raise TypeError, u"Only processing instructions and comments can be siblings of the root element"
+                    raise TypeError(u"Only processing instructions and comments can be siblings of the root element")
             element.tail = None
         _appendSibling(self, element)
 
@@ -609,7 +609,7 @@ class _Element(object):
         if self._c_node.parent and not _isElement(self._c_node.parent):
             if element._c_node.type != tree.XML_PI_NODE:
                 if element._c_node.type != tree.XML_COMMENT_NODE:
-                    raise TypeError, u"Only processing instructions and comments can be siblings of the root element"
+                    raise TypeError(u"Only processing instructions and comments can be siblings of the root element")
             element.tail = None
         _prependSibling(self, element)
 
@@ -621,7 +621,7 @@ class _Element(object):
         _assertValidNode(self)
         for element in elements:
             if element is None:
-                raise TypeError, u"Node must not be None"
+                raise TypeError(u"Node must not be None")
             _assertValidNode(element)
             _appendChild(self, element)
 
@@ -1324,7 +1324,7 @@ from .extensions import XPathEvalError, XPathResultError, Extension
 
 class __ContentOnlyElement(_Element):
     def _raiseImmutable(self):
-        raise TypeError, u"this element does not have children or attributes"
+        raise TypeError(u"this element does not have children or attributes")
 
     def set(self, key, value):
         u"set(self, key, value)"
@@ -2214,8 +2214,7 @@ class _Attrib:
 
     def pop(self, key, *default):
         if len(default) > 1:
-            raise TypeError, u"pop expected at most 2 arguments, got %d" % (
-                len(default)+1)
+            raise TypeError(u"pop expected at most 2 arguments, got %d" % (len(default)+1))
         _assertValidNode(self._element)
         result = _getAttributeValue(self._element, key, None)
         if result is None:
@@ -2828,8 +2827,7 @@ def tounicode(element_or_tree, method=u"xml", pretty_print=False,
                          unicode, doctype, method, 0, 1, pretty_print,
                          with_tail, -1)
     else:
-        raise TypeError, u"Type '%s' cannot be serialized." % \
-            type(element_or_tree)
+        raise TypeError(u"Type '%s' cannot be serialized." % type(element_or_tree))
 
 def parse(source, parser=None, base_url=None):
     u"""parse(source, parser=None, base_url=None)
@@ -2912,8 +2910,7 @@ class _Validator(object):
         Raises `AssertionError` if the document does not comply with the schema.
         """
         if not self(etree):
-            raise AssertionError, self._error_log._buildExceptionMessage(
-                u"Document does not comply with schema")
+            raise AssertionError(self._error_log._buildExceptionMessage(u"Document does not comply with schema"))
 
     def _append_log_message(self, domain, type, level, line,
                               message, filename):
