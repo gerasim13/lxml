@@ -564,7 +564,7 @@ cdef int _delAttribute(_Element element, key) except -1:
     ns, tag = _getNsTag(key)
     c_href = <const_xmlChar*>NULL if ns is None else _xcstr(ns)
     if _delAttributeFromNsName(element._c_node, c_href, _xcstr(tag)):
-        raise KeyError, key
+        raise KeyError as key
     return 0
 
 cdef int _delAttributeFromNsName(xmlNode* c_node, const_xmlChar* c_href, const_xmlChar* c_name):

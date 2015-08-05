@@ -499,7 +499,7 @@ def _delAttribute(element, key):
     ns, tag = _getNsTag(key)
     c_href = ns if ns is not None else tree.ffi.NULL
     if _delAttributeFromNsName(element._c_node, c_href, tag):
-        raise KeyError, key
+        raise KeyError as key
 
 def _delAttributeFromNsName(c_node, c_href, c_name):
     c_attr = tree.xmlHasNsProp(c_node, c_name, c_href)
