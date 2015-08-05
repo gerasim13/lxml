@@ -358,7 +358,7 @@ class DocInfo:
         self._doc = _documentOrRaise(tree)
         root_name, public_id, system_url = self._doc.getdoctype()
         if not root_name and (public_id or system_url):
-            raise ValueError, u"Could not find root node"
+            raise ValueError(u"Could not find root node")
 
     @property
     def root_name(self):
@@ -480,7 +480,7 @@ class _Element(object):
         step = 0
         _assertValidNode(self)
         if value is None:
-            raise ValueError, u"cannot assign None"
+            raise ValueError(u"cannot assign None")
         if isinstance(x, slice):
             # slice assignment
             c_node, step, slicelength = _findChildSlice(x, self._c_node)
@@ -497,7 +497,7 @@ class _Element(object):
             _assertValidNode(element)
             c_node = _findChild(self._c_node, x)
             if not c_node:
-                raise IndexError, u"list index out of range"
+                raise IndexError(u"list index out of range")
             c_source_doc = element._c_node.doc
             c_next = element._c_node.next
             _removeText(c_node.next)
@@ -534,7 +534,7 @@ class _Element(object):
             # item deletion
             c_node = _findChild(self._c_node, x)
             if not c_node:
-                raise IndexError, u"index out of range: %d" % x
+                raise IndexError(u"index out of range: %d" % x)
             _removeText(c_node.next)
             _removeNode(self._doc, c_node)
 
@@ -680,7 +680,7 @@ class _Element(object):
         _assertValidNode(element)
         c_node = element._c_node
         if c_node.parent != self._c_node:
-            raise ValueError, u"Element is not a child of this node."
+            raise ValueError(u"Element is not a child of this node.")
         c_next = element._c_node.next
         tree.xmlUnlinkNode(c_node)
         _moveTail(c_next, c_node)
@@ -697,7 +697,7 @@ class _Element(object):
         _assertValidNode(new_element)
         c_old_node = old_element._c_node
         if c_old_node.parent != self._c_node:
-            raise ValueError, u"Element is not a child of this node."
+            raise ValueError(u"Element is not a child of this node.")
         c_old_next = c_old_node.next
         c_new_node = new_element._c_node
         c_new_next = c_new_node.next
@@ -896,7 +896,7 @@ class _Element(object):
             # indexing
             c_node = _findChild(self._c_node, x)
             if not c_node:
-                raise IndexError, u"list index out of range"
+                raise IndexError(u"list index out of range")
             return _elementFactory(self._doc, c_node)
 
     def __len__(self):
@@ -918,7 +918,7 @@ class _Element(object):
         _assertValidNode(child)
         c_child = child._c_node
         if c_child.parent != self._c_node:
-            raise ValueError, u"Element is not a child of this node."
+            raise ValueError(u"Element is not a child of this node.")
 
         # handle the unbounded search straight away (normal case)
         if stop is None and (start is None or start == 0):
@@ -941,7 +941,7 @@ class _Element(object):
             c_stop = stop
             if c_stop == 0 or \
                    c_start >= c_stop and (c_stop > 0 or c_start < 0):
-                raise ValueError, u"list.index(x): x not in slice"
+                raise ValueError(u"list.index(x): x not in slice")
 
         # for negative slice indices, check slice before searching index
         if c_start < 0 or c_stop < 0:
@@ -959,9 +959,9 @@ class _Element(object):
             if c_start_node == c_child:
                 # found! before slice end?
                 if c_stop < 0 and l <= -c_stop:
-                    raise ValueError, u"list.index(x): x not in slice"
+                    raise ValueError(u"list.index(x): x not in slice")
             elif c_start < 0:
-                raise ValueError, u"list.index(x): x not in slice"
+                raise ValueError(u"list.index(x): x not in slice")
 
         # now determine the index backwards from child
         c_child = c_child.prev
@@ -986,9 +986,9 @@ class _Element(object):
             else:
                 return k
         if c_start != 0 or c_stop != 0:
-            raise ValueError, u"list.index(x): x not in slice"
+            raise ValueError(u"list.index(x): x not in slice")
         else:
-            raise ValueError, u"list.index(x): x not in list"
+            raise ValueError(u"list.index(x): x not in list")
 
     def get(self, key, default=None):
         u"""get(self, key, default=None)
@@ -1342,7 +1342,7 @@ class __ContentOnlyElement(_Element):
         if isinstance(index, slice):
             return []
         else:
-            raise IndexError, u"list index out of range"
+            raise IndexError(u"list index out of range")
 
     def __setitem__(self, index, value):
         u"__setitem__(self, index, value)"
@@ -1487,8 +1487,7 @@ class QName:
             if isinstance(text_or_uri_or_element, _Element):
                 text_or_uri_or_element = text_or_uri_or_element.tag
                 if not _isString(text_or_uri_or_element):
-                    raise ValueError, (u"Invalid input tag of type %r" %
-                                       type(text_or_uri_or_element))
+                    raise ValueError(u"Invalid input tag of type %r" % type(text_or_uri_or_element))
             elif isinstance(text_or_uri_or_element, QName):
                 text_or_uri_or_element = text_or_uri_or_element.text
             else:
@@ -1707,11 +1706,11 @@ class _ElementTree(object):
             doc = self._doc
             root = doc.getroot()
         else:
-            raise ValueError, u"Element is not in this tree."
+            raise ValueError(u"Element is not in this tree.")
         _assertValidDoc(doc)
         _assertValidNode(root)
         if element._doc is not doc:
-            raise ValueError, u"Element is not in this tree."
+            raise ValueError(u"Element is not in this tree.")
 
         c_doc = _fakeRootDoc(doc._c_doc, root._c_node)
         c_path = tree.xmlGetNodePath(element._c_node)
@@ -1736,16 +1735,16 @@ class _ElementTree(object):
         """
         _assertValidNode(element)
         if element._c_node.type != tree.XML_ELEMENT_NODE:
-            raise ValueError, u"input is not an Element"
+            raise ValueError(u"input is not an Element")
         if self._context_node is not None:
             root = self._context_node
         elif self._doc is not None:
             root = self._doc.getroot()
         else:
-            raise ValueError, u"Element is not in this tree"
+            raise ValueError(u"Element is not in this tree")
         _assertValidNode(root)
         if element._doc is not root._doc:
-            raise ValueError, u"Element is not in this tree"
+            raise ValueError(u"Element is not in this tree")
 
         path = []
         c_element = element._c_node
@@ -1778,7 +1777,7 @@ class _ElementTree(object):
             path.append(tag)
             c_element = c_element.parent
             if not c_element or c_element.type != tree.XML_ELEMENT_NODE:
-                raise ValueError, u"Element is not in this tree."
+                raise ValueError(u"Element is not in this tree.")
         if not path:
             return '.'
         path.reverse()
@@ -2081,9 +2080,9 @@ def Entity(name):
     c_name = name_utf
     if c_name[0] == '#':
         if not _characterReferenceIsValid(c_name[1:]):
-            raise ValueError, u"Invalid character reference: '%s'" % name
+            raise ValueError(u"Invalid character reference: '%s'" % name)
     elif not _xmlNameIsValid(c_name):
-        raise ValueError, u"Invalid entity reference: '%s'" % name
+        raise ValueError(u"Invalid entity reference: '%s'" % name)
     c_doc = _newXMLDoc()
     doc = _documentFactory(c_doc, None)
     c_node = _createEntity(c_doc, c_name)
@@ -2766,8 +2765,7 @@ def tostring(element_or_tree, encoding=None, method=u"xml",
         raise ValueError("Can only discard comments in C14N serialisation")
     if encoding is unicode or (encoding is not None and encoding.upper() == 'UNICODE'):
         if xml_declaration:
-            raise ValueError, \
-                u"Serialisation to unicode must not request an XML declaration"
+            raise ValueError(u"Serialisation to unicode must not request an XML declaration")
         write_declaration = 0
         encoding = unicode
     elif xml_declaration is None:
